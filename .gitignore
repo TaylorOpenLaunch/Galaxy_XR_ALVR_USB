@@ -1,0 +1,16 @@
+*.md
+*.MD
+.DS_Store
+*.apk
+*.zip
+*.log
+*.png
+*.jpg
+*.json
+*.jks
+*.keystore
+*.pem
+*.key
+.env*
+build/
+target/
