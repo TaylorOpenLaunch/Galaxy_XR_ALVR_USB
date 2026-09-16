@@ -1,0 +1,49 @@
+name: Build Windows resume-fix driver
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-windows-driver.yml'
+      - 'ci/build-windows-driver.ps1'
+      - 'patches/windows-frame-sync.patch'
+  pull_request:
+    paths:
+      - '.github/workflows/build-windows-driver.yml'
+      - 'ci/build-windows-driver.ps1'
+      - 'patches/windows-frame-sync.patch'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-driver-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-driver:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - name: Check out project
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Check out pinned ALVR source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          repository: alvr-org/ALVR
+          ref: ca2decae968f2fd37b43b777cca4ba597808ba52
+          path: upstream
+          submodules: recursive
+          persist-credentials: false
+      - name: Build driver and record provenance
+        shell: pwsh
+        run: ./ci/build-windows-driver.ps1
+      - name: Upload test driver
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: Galaxy-XR-ALVR-Windows-resume-fix-${{ github.run_id }}
+          path: dist-windows/
+          if-no-files-found: error
+          retention-days: 14

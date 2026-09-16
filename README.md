@@ -108,6 +108,22 @@ For a custom Steam folder, add `-SettingsPath "D:\Steam\config\steamvr.vrsetting
 
 ## Building and reporting issues
 
+### Experimental Windows resume-jitter fix
+
+The Windows driver CI builds a separate experimental artifact from the same pinned ALVR commit. Its only server change moves the previous-encode wait before acquiring SteamVR's shared-texture mutex. It does not change the headset APK, codec, resolution, bitrate, or tracking settings.
+
+Local testing showed repeated smooth headset removal/resume cycles and shorter sampled mutex ownership. Those tests also included an earlier encoder-recreation experiment; the clean CI artifact deliberately excludes it and must pass its own headset tests. This is not a proven permanent fix or a fix for every game freeze.
+
+To test a CI driver:
+
+1. Open this repository's **Actions** tab, select **Build Windows resume-fix driver**, and download the successful run's `Galaxy-XR-ALVR-Windows-resume-fix-…` artifact. Extract it. Check `BUILD-INFO.txt` for the project and ALVR commits.
+2. Use only the matching `21.0.0-dev13` server built from upstream commit `ca2decae968f2fd37b43b777cca4ba597808ba52`. This is a replacement driver, not a complete server installer.
+3. Exit SteamVR and the ALVR dashboard. In the server folder, back up `bin\win64\driver_alvr_server.dll` somewhere outside that folder, then replace that DLL with the downloaded one. Keep `session.json` and all settings unchanged.
+4. Start ALVR and SteamVR, rerun USB forwarding if necessary, and reopen the existing headset client. Establish a smooth picture, leave the headset off for 60 seconds, then put it back on once. Repeat several times without resizing the Steam window.
+5. If the experiment fails, exit SteamVR and ALVR before restoring the backed-up DLL. Do not overwrite a loaded driver or mix driver versions.
+
+The artifact includes a SHA-256 checksum; `Get-FileHash .\driver_alvr_server.dll -Algorithm SHA256` should match `SHA256SUMS.txt`. It is not a release download and expires after 14 days. No automatic installation, config migration, or release publication is performed.
+
 See [ACTIONS.txt](ACTIONS.txt) for GitHub build/artifact instructions, [SETUP.txt](SETUP.txt) for source build steps, and [BUILD-PRIVACY.txt](BUILD-PRIVACY.txt) for binary privacy/signing checks. Artifacts require GitHub sign-in and expire after 14 days; release downloads are separate.
 
 [Report a problem](https://github.com/TaylorOpenLaunch/Galaxy_XR_ALVR_USB/issues) with client/server versions, GPU and driver, codec, Hz, per-eye resolution, target Mbps, reproduction steps, and whether the headset was worn. Review logs before posting: remove usernames, device names, serials, IP addresses, local paths, and credentials.

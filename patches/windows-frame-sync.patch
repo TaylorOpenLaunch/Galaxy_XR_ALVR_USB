@@ -1,0 +1,29 @@
+diff --git a/alvr/server_openvr/cpp/platform/win32/OvrDirectModeComponent.cpp b/alvr/server_openvr/cpp/platform/win32/OvrDirectModeComponent.cpp
+--- a/alvr/server_openvr/cpp/platform/win32/OvrDirectModeComponent.cpp
++++ b/alvr/server_openvr/cpp/platform/win32/OvrDirectModeComponent.cpp
+@@ -216,6 +216,13 @@ void OvrDirectModeComponent::Present(vr::SharedTextureHandle_t syncTexture) {
+ 
+     m_presentMutex.lock();
+ 
++    // Finish the previous encode before taking SteamVR's keyed mutex. The
++    // encoder uses the shared D3D context, and waiting while owning the sync
++    // texture can make the compositor time out during stream resume.
++    if (m_pEncoder) {
++        m_pEncoder->WaitForEncode();
++    }
++
+     ReportPresent(m_targetTimestampNs, 0);
+ 
+     bool useMutex = true;
+@@ -350,10 +357,7 @@ void OvrDirectModeComponent::CopyTexture(uint32_t layerCount) {
+     m_pD3DRender->GetContext()->Flush();
+ 
+     if (m_pEncoder) {
+-        // Wait for the encoder to be ready.  This is important because the encoder thread
+-        // blocks on transmit which uses our shared d3d context (which is not thread safe).
+-        m_pEncoder->WaitForEncode();
+-
++        // Present already waited for the encoder before taking the keyed mutex.
+         std::string debugText;
+ 
+         uint64_t submitFrameIndex = m_targetTimestampNs;
