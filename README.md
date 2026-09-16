@@ -75,6 +75,20 @@ The visually accepted high setting was HEVC, 72 Hz, 2560 × 2560 per eye, 200 Mb
 
 ## Troubleshooting
 
+### ALVR unblock after a SteamVR crash
+
+SteamVR can disable the ALVR add-on after a crash, leaving the headset waiting for a PC. Fix the original crash first. For example, our RTX 3090 could not initialize H.264 at the 5120-pixel-wide stereo resolution; HEVC initialized at that size.
+
+Download [ALVR-Unblock.ps1](ALVR-Unblock.ps1), **exit SteamVR**, and run this from the script's folder in Windows PowerShell:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\ALVR-Unblock.ps1
+```
+
+The script refuses to run while SteamVR is open, backs up its settings before clearing only ALVR's safe-mode block, and leaves ALVR quality settings alone. Then open ALVR and start SteamVR. It does not fix the underlying crash or create USB forwarding.
+
+For a custom Steam folder, add `-SettingsPath "D:\Steam\config\steamvr.vrsettings"` to the command, using your actual path. Alternatively, enable ALVR under SteamVR Settings > Startup/Shutdown > Manage Add-ons.
+
 | Symptom | What to try |
 | --- | --- |
 | Waiting for streamer / asks to Trust | Open the PC dashboard, trust the physical headset, rerun the USB script, and check `127.0.0.1` plus TCP. |
