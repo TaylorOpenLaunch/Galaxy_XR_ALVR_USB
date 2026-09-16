@@ -32,7 +32,11 @@ test -s "$loader_dir/libopenxr_loader.so"
 
 cd "$upstream_root"
 export RUSTFLAGS="--remap-path-prefix=$HOME=/builder --remap-path-prefix=$project_root=/src"
-cargo +1.97.1 xtask build-client --release
+# Cargo clears RUSTFLAGS when launching a program through `cargo run`.
+# Run the compiled xtask directly so cargo-apk inherits the privacy flags.
+export RUSTUP_TOOLCHAIN=1.97.1
+cargo +1.97.1 build -p alvr_xtask
+"$upstream_root/target/debug/alvr_xtask" build-client --release
 apk="$upstream_root/build/alvr_client_android/alvr_client_android.apk"
 "$sdk_dir/build-tools/35.0.0/apksigner" verify "$apk"
 
