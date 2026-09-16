@@ -1,5 +1,7 @@
 GALAXY XR + ALVR OVER USB -- PROOF OF CONCEPT
 
+PROJECT VERSION: Beta 0.1
+
 STATUS: PREPARATION BUILD. NOT YET A DOWNLOAD-AND-PLAY RELEASE.
 The cleaned client must pass a short headset test before a release is published.
 Do not use a random ALVR APK or a different server version with this patch.

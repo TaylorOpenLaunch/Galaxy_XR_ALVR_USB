@@ -1,19 +1,20 @@
 HOW TO GET A GITHUB-BUILT APK
 
-The Action is named "Build Galaxy XR APK".
+Project version: Beta 0.1.
+The Action is named "Build Galaxy XR APK - Beta 0.1".
 It builds pinned upstream ALVR plus this repository's Galaxy XR client patch.
 It does not upload anyone's local APK and does not publish a GitHub Release.
 
 For maintainers:
 1. Merge the reviewed workflow change into the repository's default branch.
 2. Open the GitHub repository, then choose Actions.
-3. Choose "Build Galaxy XR APK", then Run workflow and the desired branch.
+3. Choose "Build Galaxy XR APK - Beta 0.1", then Run workflow and the desired branch.
 4. Wait for the run to finish. A green check means the automated build passed,
    NOT that a real headset test passed.
 
 For testers:
-1. Open Actions and choose a successful "Build Galaxy XR APK" run.
-2. Scroll to Artifacts and download "Galaxy-XR-ALVR-test-<run number>".
+1. Open Actions and choose a successful "Build Galaxy XR APK - Beta 0.1" run.
+2. Scroll to Artifacts and download "Galaxy-XR-ALVR-beta-0.1-<run number>".
 3. Extract the downloaded ZIP. The client is Galaxy-XR-ALVR.apk.
 4. Read START-HERE.txt and install the APK using Android platform-tools.
 5. Use the matching PC server specified by SETUP.txt.
