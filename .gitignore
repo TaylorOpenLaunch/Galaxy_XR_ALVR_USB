@@ -1,5 +1,6 @@
 *.md
 *.MD
+!README.md
 .DS_Store
 *.apk
 *.zip
