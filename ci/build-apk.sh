@@ -35,6 +35,9 @@ export RUSTFLAGS="--remap-path-prefix=$HOME=/builder --remap-path-prefix=$projec
 # Cargo clears RUSTFLAGS when launching a program through `cargo run`.
 # Run the compiled xtask directly so cargo-apk inherits the privacy flags.
 export RUSTUP_TOOLCHAIN=1.97.1
+# Native dependencies can retain compiler directories in DWARF even when Rust
+# paths are remapped. Strip debug metadata, not runtime code or license notices.
+export CARGO_PROFILE_RELEASE_STRIP=debuginfo
 cargo +1.97.1 build -p alvr_xtask
 "$upstream_root/target/debug/alvr_xtask" build-client --release
 apk="$upstream_root/build/alvr_client_android/alvr_client_android.apk"
