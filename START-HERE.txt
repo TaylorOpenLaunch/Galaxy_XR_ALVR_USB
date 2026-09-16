@@ -19,9 +19,19 @@ WHAT YOU NEED
 3. A USB data cable between the PC and the headset's DATA port.
    For high bitrate use a USB 3 cable and port. A charge-only cable will not work.
 4. Steam and SteamVR installed on that PC.
-5. A matching ALVR client and server. This patch targets 21.0.0-dev13 at:
+5. Our patched Galaxy XR client and the official matching ALVR Windows server.
+   Download the Windows server ZIP here:
+   https://github.com/alvr-org/ALVR-nightly/releases/download/v21.0.0-dev13%2Bnightly.2026.09.16/alvr_streamer_windows.zip
+   Release page (open Assets if the download is not visible):
+   https://github.com/alvr-org/ALVR-nightly/releases/tag/v21.0.0-dev13%2Bnightly.2026.09.16
+   Choose alvr_streamer_windows.zip, NOT the debug ZIP or Linux download.
+   Extract the ZIP into its own folder and open ALVR Dashboard.exe.
+   Do NOT install alvr_client_android.apk from that page: use our patched APK.
+   This patch targets 21.0.0-dev13 at:
    ca2decae968f2fd37b43b777cca4ba597808ba52
-   Until matching release downloads are supplied, see SETUP.txt for source build.
+   The nightly release records the same upstream commit. Its binary still needs
+   our short headset test; the demonstrated server was locally built from it.
+   Our tested patched APK download is still pending. See SETUP.txt for source build.
 6. Google's Android platform-tools for Windows:
    https://developer.android.com/tools/releases/platform-tools
 

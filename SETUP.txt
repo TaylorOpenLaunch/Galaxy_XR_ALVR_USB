@@ -7,6 +7,16 @@ Upstream: https://github.com/alvr-org/ALVR
 Required base commit: ca2decae968f2fd37b43b777cca4ba597808ba52
 Use a matching unmodified ALVR server (21.0.0-dev13).
 
+Official matching Windows server download:
+https://github.com/alvr-org/ALVR-nightly/releases/download/v21.0.0-dev13%2Bnightly.2026.09.16/alvr_streamer_windows.zip
+Release notes confirm the required upstream source commit:
+https://github.com/alvr-org/ALVR-nightly/releases/tag/v21.0.0-dev13%2Bnightly.2026.09.16
+Use our patched headset APK, not the upstream APK from that release.
+This official binary has not yet been tested here; the demonstrated unmodified
+server was locally built from the same commit.
+General stable releases (not the version specified for this proof of concept):
+https://github.com/alvr-org/ALVR/releases
+
 The patch selects a SurfaceTexture decoder output path on Galaxy XR, configures
 the coded stereo frame dimensions, and uses the runtime-recommended lobby size.
 It raises the Android target SDK to 35. Experimental server modifications and
