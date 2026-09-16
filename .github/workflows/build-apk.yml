@@ -4,11 +4,17 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - 'README.md'
+      - '*.txt'
+      - '*.ps1'
       - '.github/workflows/build-apk.yml'
       - 'ci/**'
       - 'patches/**'
   pull_request:
     paths:
+      - 'README.md'
+      - '*.txt'
+      - '*.ps1'
       - '.github/workflows/build-apk.yml'
       - 'ci/**'
       - 'patches/**'
