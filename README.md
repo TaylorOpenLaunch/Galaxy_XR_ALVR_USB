@@ -62,6 +62,20 @@ Use the Windows local desktop/console, not an active Windows Remote Desktop sess
 
 Set quality in the **PC ALVR dashboard**. Start with HEVC, **72 Hz**, 1440 × 1440 per eye, 60 Mbps target, **8-bit SDR**, HDR off, and both foveated encoding and client-side foveation disabled. Increase one setting at a time.
 
+### Important: re-enable ALVR after a SteamVR crash
+
+**If SteamVR crashes on the first run or while testing quality settings, it may disable the ALVR add-on.** On the next launch, a pop-up may report a blocked/disabled add-on and ask you to re-enable it. This does not necessarily mean you need to reinstall ALVR.
+
+In SteamVR, open **Settings > Startup/Shutdown > Manage Add-ons** and enable **ALVR** again, then restart SteamVR. Menu wording can vary by SteamVR version.
+
+Alternatively, **close SteamVR completely** and run the included helper from the downloaded files folder:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\ALVR-Unblock.ps1
+```
+
+Then open the PC ALVR dashboard and start SteamVR again. The helper backs up SteamVR settings and clears only ALVR's safe-mode block; it does not change quality settings or fix the original crash. If a new quality setting caused the crash, restore your last working setting before retrying. SteamVR may block the add-on again if it crashes again.
+
 ## Recommended upper setting for the tested RTX 3090 rig
 
 | Setting | Value |
@@ -94,6 +108,25 @@ A full 60-second SteamVR-scene capture on that rig completed without an event-st
 
 GPU telemetry includes 60 samples spanning approximately 62 seconds and covering the stream capture. The owner reported the picture as smooth before the run. Client FPS telemetry nevertheless dipped as low as 24. **This is not a locked-72-FPS guarantee, a sustained-375-Mbps measurement, or a demanding-game endurance benchmark.** ALVR latency is estimated, not externally measured motion-to-photon latency. Zero reported packet loss does not mean zero dropped or repeated display frames.
 
+### Wi-Fi comparison: 6 GHz (Wi-Fi 7 reported)
+
+A separate 60-second Wi-Fi capture used the same 375 Mbps target, HEVC 8-bit, 72 Hz, per-eye resolution, foveation settings, and TCP protocol. The owner reported it as very smooth. USB stream forwarding was removed; the cable remained connected only for ADB telemetry.
+
+The headset reported **5975 MHz (6 GHz)** and Wi-Fi standard **8 / 802.11be (Wi-Fi 7)** with MLO immediately after the tests. This is the 6 GHz band also used by Wi-Fi 6E, but **this run is not a verified Wi-Fi 6E / 802.11ax benchmark**. Android's standard identifiers are documented in [ScanResult](https://developer.android.com/reference/android/net/wifi/ScanResult#WIFI_STANDARD_11BE).
+
+| Measurement | Earlier USB capture | Wi-Fi capture |
+| --- | --- | --- |
+| Actual video bitrate, average | 315 Mbps | 317 Mbps |
+| Reported packet-loss counter increase | **0** | **0** |
+| Server / reported client FPS, average | 71.6 / 63.6 | 71.4 / 63.9 |
+| ALVR pipeline latency, average / p95 | 113 / 127 ms | 124 / 128 ms |
+| Encoding / decoding latency, average | 13.3 / 55.5 ms | 13.4 / 55.4 ms |
+| GPU / hardware encoder utilization, average | 18% / 81% | 19% / 81% |
+
+The Wi-Fi capture completed without an event-stream interruption, with 120 statistics summaries and 60 GPU samples. Its reported client FPS ranged from 23 to 72. A subsequent **450 Mbps target produced visible jitter**, so the target was returned to **375 Mbps**.
+
+At these settings, Wi-Fi delivered similar actual bitrate and reported frame rates; **these results do not demonstrate a USB advantage**. These were separate short scene captures, not a controlled replay or endurance comparison. The USB run used the earlier local stable client; Wi-Fi used the CI-built stable APK. The latency difference cannot be attributed solely to transport. Both used TCP: zero ALVR-reported loss does not establish zero wireless loss or TCP retransmissions.
+
 ## Troubleshooting
 
 | Symptom | What to try |
@@ -103,15 +136,7 @@ GPU telemetry includes 60 samples spanning approximately 62 seconds and covering
 | Black screen / Starting headset | Wear it normally, check prompts, and reopen the client. Reboot normally if needed, then recreate USB forwarding. |
 | Green picture | Leave the active Windows Remote Desktop session and use the local console. |
 | Jitter after changing codec/quality or resuming | Restore the last good setting. Exit the headset client, SteamVR, and the PC ALVR dashboard; reopen all three and recreate USB forwarding. Restarting only one component may not clear it. If it persists, reduce bitrate. |
-| ALVR disabled after a SteamVR crash | Exit SteamVR and run the included `ALVR-Unblock.ps1`, or enable ALVR under SteamVR Settings > Startup/Shutdown > Manage Add-ons. |
-
-For the unblock helper:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\ALVR-Unblock.ps1
-```
-
-It backs up SteamVR settings and clears only ALVR's safe-mode block; it does not repair the original crash or change quality settings.
+| Pop-up reports ALVR blocked/disabled after a crash | [Re-enable ALVR or run `ALVR-Unblock.ps1`](#important-re-enable-alvr-after-a-steamvr-crash). Restore the last working quality setting if needed. |
 
 ## Builds and limitations
 
@@ -119,7 +144,7 @@ CI pins upstream stable commit `a9f6542fa507a841f40ab4f3fcb531427cd02550`, appli
 
 The stable patch adds Android XR runtime/Full Space declarations, a separate launcher package, a 72 Hz capability fallback, and a smaller lobby swapchain. It retains stable upstream decoding and does **not** modify the Windows server.
 
-Local stable-client tests passed several headset removal/resume cycles. Sleep/resume and connection timeouts can still occur; off-head keep-awake is not guaranteed. Compilation is not hardware acceptance. No AV1, 10-bit, HDR, or 90 Hz support is claimed by this build. No Wi-Fi comparison was performed.
+Local stable-client tests passed several headset removal/resume cycles. The CI-built stable APK was subsequently installed and reported visually smooth over USB and Wi-Fi. Sleep/resume and connection timeouts can still occur; off-head keep-awake is not guaranteed. Compilation alone is not hardware acceptance. No AV1, 10-bit, HDR, or 90 Hz support is claimed by this build.
 
 See [ACTIONS.txt](ACTIONS.txt), [SETUP.txt](SETUP.txt), and [BUILD-PRIVACY.txt](BUILD-PRIVACY.txt). CI artifact downloads require GitHub sign-in and expire after 14 days. Release publication is separate.
 
