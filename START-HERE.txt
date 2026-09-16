@@ -1,7 +1,10 @@
 GALAXY XR + ALVR OVER USB -- PROOF OF CONCEPT
 
-STATUS: PREPARATION BUILD. NOT YET A DOWNLOAD-AND-PLAY RELEASE.
-The cleaned client must pass a short headset test before a release is published.
+PROJECT VERSION: Beta 0.1
+
+STATUS: Beta 0.1 -- basic USB SteamVR display test passed on one Galaxy XR.
+The CI APK was locally re-signed for the test to preserve the existing app data.
+The released CI APK retains its original temporary debug signature.
 Do not use a random ALVR APK or a different server version with this patch.
 
 WHAT THIS DOES
@@ -29,7 +32,7 @@ WHAT YOU NEED
    ca2decae968f2fd37b43b777cca4ba597808ba52
    The nightly release records the same upstream commit. Its binary still needs
    our short headset test; the demonstrated server was locally built from it.
-   Our tested patched APK download is still pending. See SETUP.txt for source build.
+   Get our patched APK from this project's Beta 0.1 release, not upstream's APK.
 6. Google's Android platform-tools for Windows:
    https://developer.android.com/tools/releases/platform-tools
 
@@ -41,12 +44,13 @@ You may charge the external battery separately during use. The headset data port
 does not charge the battery.
 
 STEP 2 -- INSTALL THE MATCHING CLIENT
-After a tested release exists, download its APK and the matching PC server.
+Download Galaxy-XR-ALVR.apk from this project's Beta 0.1 release and the matching
+PC server linked above. The original CI signature differs from existing clients.
 Never assume that the newest upstream ALVR server matches this development APK.
 Extract Google's platform-tools folder beside Connect-USB.ps1.
 Open PowerShell in that folder. To install the release APK, run:
   .\platform-tools\adb.exe install -r .\Galaxy-XR-ALVR.apk
-That filename is the planned release filename; no APK is included in this branch.
+The APK is a release asset, not a file stored in the source repository.
 If installation reports a signing conflict, do not blindly uninstall your existing
 client: uninstalling deletes that application's data. Save what you need first.
 
@@ -100,6 +104,8 @@ No headset found:
 Starting headset never finishes:
   Wear it normally, check for a system prompt, then close/reopen the headset client.
   Device wakefulness does not guarantee an active OpenXR session.
+  A normal headset reboot resolved this stall during our Beta 0.1 test.
+  Reconnect USB and run Connect-USB.ps1 again after rebooting.
 Green picture:
   Disconnect Windows Remote Desktop and use the PC's local desktop/console.
   Active RDP previously reproduced green output in this setup.

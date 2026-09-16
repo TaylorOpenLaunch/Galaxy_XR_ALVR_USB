@@ -1,5 +1,6 @@
 *.md
 *.MD
+!README.md
 .DS_Store
 *.apk
 *.zip
@@ -14,3 +15,5 @@
 .env*
 build/
 target/
+upstream/
+dist/

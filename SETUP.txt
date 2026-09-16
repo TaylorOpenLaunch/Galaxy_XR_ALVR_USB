@@ -1,4 +1,4 @@
-Galaxy XR ALVR USB proof of concept
+Galaxy XR ALVR USB -- Beta 0.1 proof of concept
 
 License: MIT. See LICENSE. Upstream copyright notices are preserved.
 
