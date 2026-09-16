@@ -13,7 +13,7 @@ sdk_dir="${ANDROID_HOME:?The runner must provide an Android SDK}"
 unset ANDROID_SDK_ROOT
 sudo apt-get update
 sudo apt-get install -y ripgrep unzip
-sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018'
+"$sdk_dir/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018'
 export ANDROID_NDK_HOME="$sdk_dir/ndk/27.2.12479018"
 rustup toolchain install 1.97.1 --profile minimal --target aarch64-linux-android
 cargo +1.97.1 install --locked --git https://github.com/zarik5/cargo-apk \
