@@ -18,6 +18,7 @@ Build in a separate upstream checkout:
   git checkout ca2decae968f2fd37b43b777cca4ba597808ba52
   git submodule update --init --recursive
   git apply /path/to/galaxy-xr-client.patch
+  cargo xtask prepare-deps --platform android
   cargo xtask build-client --release
 
 Install upstream's required Android SDK/NDK and Rust build dependencies first.
